@@ -1,23 +1,63 @@
-# PDF Links — Admin-upload + Real-time viewers
+# 🎓 EduPortal - GIST Cyber Security & Data Science
 
-This adds a minimal Node.js server to host PDFs, let a single admin upload/replace PDFs, and notify viewers in real time when a PDF is updated.
+A modern, full-stack educational portal designed for **Geethanjali Institute of Science and Technology**. This platform allows admins to manage curriculum subjects and students to access question banks and study materials seamlessly.
 
-How it works
-- Admin logs in at `/public/admin.html` using the password in `.env` (or `ADMIN_PASSWORD` environment variable). Uploading a file overwrites any existing file with the same name.
-- Admin can also manage subjects from the Admin UI: add new subjects (automatically creates an HTML file) and delete existing subjects. Changes are persisted in `subjects.json` and broadcast to all connected clients.
-- Public pages include a `div#pdf-links` (e.g., `data-science.html`) and load `/public/js/client.js` which fetches `/api/pdfs` and renders links. Each link points to `viewer.html?file=<filename>` which opens the PDF in an iframe.
-- Subject lists on site pages are rendered dynamically from `/api/subjects`; only admins see add/remove controls (they appear on the page when logged in). Subject updates are broadcast via Socket.IO (`subjects-updated`) so normal users see changes immediately.
-Quick start
-1. Install Node.js (v16+ recommended).
-2. Copy `.env.example` to `.env` and set `ADMIN_PASSWORD` and `SESSION_SECRET`.
-3. Install dependencies and start the server:
+## 🚀 Features
 
+- **GIST Branding**: Official college logo and centered institutional identity.
+- **Admin Command Center**: 
+  - Secure JWT authentication.
+  - Add/Remove subjects for Cyber Security and Data Science.
+  - **Real PDF Uploads**: Upload study materials directly from your computer.
+- **Student Portal**:
+  - Responsive categorization of modules.
+  - Instant access to "Question Bank" PDFs in a new browser tab.
+- **Modern UI**: Built with React, Framer Motion for animations, and Lucide icons.
+
+## 🛠️ Technology Stack
+
+- **Frontend**: React, Vite, Framer Motion, Axios, Lucide React.
+- **Backend**: Node.js, Express, Multer (for file uploads), NeDB (for lightweight database).
+
+## 📥 Installation & Setup
+
+### 1. Prerequisite
+Ensure you have [Node.js](https://nodejs.org/) installed.
+
+### 2. Backend Setup
+1. Navigate to the `backend` folder.
+2. Install dependencies:
+   ```bash
    npm install
+   ```
+3. Create a `.env` file based on `.env.example` and set your credentials:
+   ```env
+   PORT=5000
+   JWT_SECRET=your_secret_key
+   ADMIN_EMAIL=admin@gist.edu.in
+   ADMIN_PASSWORD=your_password
+   ```
+4. Start the server:
+   ```bash
    npm start
+   ```
 
-4. Open http://localhost:3000/
-- Admin UI: http://localhost:3000/public/admin.html
-- Viewer example: click PDF links on pages with a `#pdf-links` area (e.g., `data-science.html`).
+### 3. Frontend Setup
+1. Navigate to the `frontend` folder.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-Security notes
-- This is intended as a simple self-hosted demo. For production, use HTTPS, a secure admin authentication mechanism, and consider file sanitization and size limits.
+## 🌐 Usage
+- **Student View**: `http://localhost:5173`
+- **Admin Dashboard**: `http://localhost:5173/login`
+
+## 📁 Project Structure
+- `/frontend`: React application source code.
+- `/backend`: Node.js server and API logic.
+- `/backend/uploads`: Store for uploaded PDF files.
