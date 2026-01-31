@@ -1,0 +1,18 @@
+{"name":"Machine Learning","category":"Data Science","createdAt":{"$$date":1738318800000},"_id":"sub4","pdfUrl":"ml.pdf"}
+{"name":"Data Visualization","category":"Data Science","createdAt":{"$$date":1738318800000},"_id":"sub5","pdfUrl":"dv.html"}
+{"name":"Natural Language Processing","category":"Data Science","createdAt":{"$$date":1738318800000},"_id":"sub6","pdfUrl":"nlp.html"}
+{"$$deleted":true,"_id":"sub4"}
+{"$$deleted":true,"_id":"sub5"}
+{"$$deleted":true,"_id":"sub6"}
+{"name":"SPM","category":"Cyber Security","pdfUrl":"uploads/1769838786909-spm.pdf","createdAt":{"$$date":1769838786916},"_id":"L8CauuYNSURRNomB"}
+{"name":"CC&DF","category":"Cyber Security","pdfUrl":"uploads/1769849425968-cc_df.pdf.pdf","createdAt":{"$$date":1769849425980},"_id":"FenBlgBSC4BIJdVG"}
+{"name":"CNS","category":"Cyber Security","pdfUrl":"uploads/1769849443608-cns.pdf","createdAt":{"$$date":1769849443613},"_id":"XgXvbqG1wjECdYMo"}
+{"name":"SEP","category":"Cyber Security","pdfUrl":"uploads/1769849457931-sep.pdf","createdAt":{"$$date":1769849457939},"_id":"bonfmRvZqgoleR7s"}
+{"name":"IOT","category":"Cyber Security","pdfUrl":"uploads/1769849477335-iot.pdf","createdAt":{"$$date":1769849477342},"_id":"flEKVAurHfPmh1xv"}
+{"name":"ML","category":"Cyber Security","pdfUrl":"uploads/1769849506486-ml.pdf","createdAt":{"$$date":1769849506493},"_id":"FfdOWgqdoDVYxa8L"}
+{"name":"NLP","category":"Data Science","pdfUrl":"uploads/1769849530898-nlp.pdf","createdAt":{"$$date":1769849530904},"_id":"p8q7A4alZemhjZqT"}
+{"name":"DV","category":"Data Science","pdfUrl":"uploads/1769849542594-dv.pdf","createdAt":{"$$date":1769849542599},"_id":"fepMdF5l4N9wFrA3"}
+{"name":"SEP","category":"Data Science","pdfUrl":"uploads/1769849557522-sep.pdf","createdAt":{"$$date":1769849557534},"_id":"YAo8sq7zgjb009LA"}
+{"name":"PA","category":"Data Science","pdfUrl":"uploads/1769849571557-pa.pdf","createdAt":{"$$date":1769849571564},"_id":"gI7LEtu2SB6QSwla"}
+{"name":"CN/IP","category":"Data Science","pdfUrl":"uploads/1769849594701-cnip.pdf","createdAt":{"$$date":1769849594708},"_id":"nRnzeKsRvziEzUUO"}
+{"name":"SPM","category":"Data Science","pdfUrl":"uploads/1769849684538-spm.pdf","createdAt":{"$$date":1769849684545},"_id":"uj7rh7WtxBpQqgz1"}

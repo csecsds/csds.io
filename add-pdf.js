@@ -124,7 +124,7 @@
                     a.style.marginLeft = '10px';
                     a.textContent = '⬇️ ' + displayText;
                     pdfLinks.appendChild(a);
-                    attachRemoveButtonToAnchor(a);
+                    attachRemoveButtonToAnchor(a, false, window.__isAdminForPdf);
                 }
             }
 
@@ -217,12 +217,14 @@
 
             const snippet = `<!-- Add this link to the page HTML to persist -->\n<a href="pdfs/${name}" download class="download-btn">⬇️ ${escapeHtml(name)}</a>`;
             prompt('Automatic saving is not supported in this browser.\nWe added a temporary link to the page.\nTo persist the PDF, copy the file into the site\'s pdfs/ folder and add this HTML into your page:', snippet);
+            attachRemoveButtonToAnchor(a, true, window.__isAdminForPdf);
         };
         input.click();
     }
 
-    function attachRemoveButtonToAnchor(a, isTemporary) {
+    function attachRemoveButtonToAnchor(a, isTemporary, isAdmin) {
         if (!a || a.dataset.removeAttached) return;
+        if (!isAdmin) return; // only attach UI to admins
         a.dataset.removeAttached = '1';
         const btn = document.createElement('button');
         btn.type = 'button';
@@ -245,26 +247,78 @@
                     if (btn.parentNode) btn.parentNode.removeChild(btn);
                 }
             } else {
-                removePdf(filename, a);
+                // server-side delete if admin
+                if (confirm('Delete "' + filename + '" from server?')) {
+                    fetch('/api/pdfs/delete', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ filename }) })
+                        .then(r => r.json())
+                        .then(j => {
+                            if (j && j.success) {
+                                if (a.parentNode) a.parentNode.removeChild(a);
+                                if (btn.parentNode) btn.parentNode.removeChild(btn);
+                                alert('Deleted ' + filename);
+                            } else {
+                                alert('Delete failed: ' + (j && j.error ? j.error : 'unknown'));
+                            }
+                        }).catch(err => { console.error(err); alert('Delete failed'); });
+                }
             }
         });
         a.parentNode.insertBefore(btn, a.nextSibling);
     }
 
-    function scanAndAttach() {
-        // Attach remove buttons to existing anchors in controls and pdf-links
+    function scanAndAttach(isAdmin) {
+        // Attach remove buttons to existing anchors in controls and pdf-links only for admins
         const anchors = document.querySelectorAll('.controls a.download-btn, #pdf-links a.download-btn');
-        anchors.forEach(a => attachRemoveButtonToAnchor(a, false));
+        anchors.forEach(a => attachRemoveButtonToAnchor(a, false, isAdmin));
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', async function () {
+        // determine admin session so add/remove controls are admin-only
+        let isAdmin = false;
+        try {
+            const s = await fetch('/api/session', { credentials: 'same-origin' });
+            if (s.ok) {
+                const j = await s.json(); isAdmin = !!j.isAdmin;
+            }
+        } catch (e) { /* ignore */ }
+        // expose globally for other helpers in this file
+        window.__isAdminForPdf = !!isAdmin;
+
         const btn = document.getElementById('add-pdf-btn');
         if (btn) {
-            btn.addEventListener('click', function (e) {
-                e.preventDefault();
-                promptAndSave();
-            });
+            if (!isAdmin) {
+                // hide add button for non-admin users
+                btn.style.display = 'none';
+            } else {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // server upload flow: choose file and POST to /api/upload
+                    const input = document.createElement('input');
+                    input.type = 'file'; input.accept = '.pdf';
+                    input.onchange = async function () {
+                        const file = input.files[0]; if (!file) return;
+                        // determine name to save as: if page has iframe pdf-viewer use its target name
+                        let desiredName = '';
+                        const iframe = document.getElementById('pdf-viewer');
+                        if (iframe && iframe.src) {
+                            try {
+                                const u = new URL(iframe.src, location.href);
+                                const parts = u.pathname.split('/'); desiredName = parts[parts.length-1];
+                            } catch (e) { desiredName = ''; }
+                        }
+                        const fd = new FormData(); fd.append('file', file);
+                        if (desiredName) fd.append('name', desiredName);
+                        const res = await fetch('/api/upload', { method: 'POST', credentials: 'same-origin', body: fd });
+                        if (!res.ok) { alert('Upload failed'); return; }
+                        alert('Uploaded ' + file.name);
+                        // refresh pdf-links via existing client script (socket will notify too)
+                    };
+                    input.click();
+                });
+            }
         }
-        scanAndAttach();
+
+        // Attach remove buttons only for admin
+        scanAndAttach(isAdmin);
     });
 })();

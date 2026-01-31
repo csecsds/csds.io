@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>PDF Viewer</title>
+  <style>
+    body,html { height:100%; margin:0 }
+    .toolbar { padding:8px; background:#1976d2; color:#fff; display:flex; gap:8px; align-items:center }
+    .toolbar a { color:#fff; text-decoration:none }
+    iframe { width:100%; height:calc(100% - 48px); border:none }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <a href="index.html">⬅ Home</a>
+    <div id="file-title" style="margin-left:12px;font-weight:600"></div>
+  </div>
+  <iframe id="pdf-frame" src="about:blank"></iframe>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  function qs(name) {
+    const u = new URL(window.location.href);
+    return u.searchParams.get(name);
+  }
+  function setSrc(name) {
+    const encoded = encodeURIComponent(name);
+    // add cache-bust
+    const url = '/pdfs/' + encoded + '?v=' + Date.now();
+    const frame = document.getElementById('pdf-frame');
+    frame.src = url;
+    document.getElementById('file-title').textContent = name;
+  }
+  const file = qs('file');
+  if (!file) {
+    document.getElementById('file-title').textContent = 'No file specified';
+  } else {
+    setSrc(file);
+  }
+
+  socket.on('pdf-updated', meta => {
+    if (!file) return;
+    if (meta.name === file) {
+      console.log('Updated:', meta.name, 'reloading viewer');
+      setSrc(file);
+    }
+  });
+</script>
+</body>
+</html>

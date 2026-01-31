@@ -92,17 +92,14 @@
         </header>
         <h2>Cybersecurity Question Banks</h2>
 
-        <ul class="subjects-list" id="cyber-subjects">
-            <li><a href="ccdf.html">CC & DF</a> <button class="remove-subject" data-href="ccdf.html" style="margin-left:10px;background:#e53935;color:#fff;border:none;padding:6px 8px;border-radius:4px;cursor:pointer">🗑️ Remove</button></li>
-            <li><a href="cns.html">CNS</a> <button class="remove-subject" data-href="cns.html" style="margin-left:10px;background:#e53935;color:#fff;border:none;padding:6px 8px;border-radius:4px;cursor:pointer">🗑️ Remove</button></li>
-            <li><a href="sep.html">SEP</a> <button class="remove-subject" data-href="sep.html" style="margin-left:10px;background:#e53935;color:#fff;border:none;padding:6px 8px;border-radius:4px;cursor:pointer">🗑️ Remove</button></li>
-            <li><a href="iot.html">IoT</a> <button class="remove-subject" data-href="iot.html" style="margin-left:10px;background:#e53935;color:#fff;border:none;padding:6px 8px;border-radius:4px;cursor:pointer">🗑️ Remove</button></li>
-            <li><a href="ml.html">ML</a> <button class="remove-subject" data-href="ml.html" style="margin-left:10px;background:#e53935;color:#fff;border:none;padding:6px 8px;border-radius:4px;cursor:pointer">🗑️ Remove</button></li>
-            <li><a href="spm.html">SPM</a> <button class="remove-subject" data-href="spm.html" style="margin-left:10px;background:#e53935;color:#fff;border:none;padding:6px 8px;border-radius:4px;cursor:pointer">🗑️ Remove</button></li>
-        </ul>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+            <button id="add-subject-btn" style="display:none;padding:8px 12px;border-radius:6px;border:none;background:#1976d2;color:#fff;cursor:pointer">➕ Add Subject</button>
+        </div>
+        <ul class="subjects-list" id="cyber-subjects"></ul>
 
         <a href="index.html" class="back-link">← Back to Home</a>
     </div>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="manage-subjects.js"></script>
 </body>
 </html>

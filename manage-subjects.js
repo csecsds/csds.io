@@ -149,17 +149,92 @@
         });
     }
 
+    async function fetchSubjects() {
+        try {
+            const res = await fetch('/api/subjects');
+            if (!res.ok) return null;
+            return await res.json();
+        } catch (e) {
+            console.error('Failed to fetch subjects', e);
+            return null;
+        }
+    }
+
+    function renderSubjects(subjects, isAdmin) {
+        // main
+        const mainList = document.getElementById('main-subjects-list');
+        if (mainList && subjects.main) {
+            mainList.innerHTML = '';
+            subjects.main.forEach(s => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = s.filename; a.textContent = s.title; li.appendChild(a);
+                if (isAdmin) {
+                    const btn = document.createElement('button');
+                    btn.className = 'remove-subject'; btn.dataset.href = s.filename; btn.dataset.category = 'main';
+                    btn.style = 'margin-left:10px;background:#e53935;color:#fff;border:none;padding:6px 8px;border-radius:4px;cursor:pointer';
+                    btn.textContent = '🗑️ Remove';
+                    btn.addEventListener('click', onRemoveSubjectButtonServer);
+                    li.appendChild(btn);
+                }
+                mainList.appendChild(li);
+            });
+        }
+        // data-science
+        const dsList = document.getElementById('data-science-subjects');
+        if (dsList && subjects['data-science']) {
+            dsList.innerHTML = '';
+            subjects['data-science'].forEach(s => {
+                const li = document.createElement('li');
+                const a = document.createElement('a'); a.href = s.filename; a.textContent = s.title; li.appendChild(a);
+                if (isAdmin) {
+                    const btn = document.createElement('button');
+                    btn.className = 'remove-subject'; btn.dataset.href = s.filename; btn.dataset.category = 'data-science';
+                    btn.style = 'margin-left:10px;background:#e53935;color:#fff;border:none;padding:6px 8px;border-radius:4px;cursor:pointer';
+                    btn.textContent = '🗑️ Remove';
+                    btn.addEventListener('click', onRemoveSubjectButtonServer);
+                    li.appendChild(btn);
+                }
+                dsList.appendChild(li);
+            });
+        }
+        // cyber
+        const cyList = document.getElementById('cyber-subjects');
+        if (cyList && subjects['cyber']) {
+            cyList.innerHTML = '';
+            subjects['cyber'].forEach(s => {
+                const li = document.createElement('li');
+                const a = document.createElement('a'); a.href = s.filename; a.textContent = s.title; li.appendChild(a);
+                if (isAdmin) {
+                    const btn = document.createElement('button');
+                    btn.className = 'remove-subject'; btn.dataset.href = s.filename; btn.dataset.category = 'cyber';
+                    btn.style = 'margin-left:10px;background:#e53935;color:#fff;border:none;padding:6px 8px;border-radius:4px;cursor:pointer';
+                    btn.textContent = '🗑️ Remove';
+                    btn.addEventListener('click', onRemoveSubjectButtonServer);
+                    li.appendChild(btn);
+                }
+                cyList.appendChild(li);
+            });
+        }
+    }
+
+    async function onRemoveSubjectButtonServer(e) {
+        const btn = e.currentTarget;
+        const filename = btn.dataset.href;
+        const category = btn.dataset.category;
+        if (!confirm('Delete subject file "' + filename + '"?')) return;
+        try {
+            const res = await fetch('/api/subjects/delete', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ filename, category }) });
+            if (!res.ok) {
+                const j = await res.json(); alert('Error: ' + (j.error || res.statusText)); return;
+            }
+            const subs = await fetchSubjects(); if (subs) renderSubjects(subs, true);
+        } catch (err) { console.error(err); alert('Delete failed'); }
+    }
+
     function attachSubjectButtons() {
         const addBtns = document.querySelectorAll('#add-subject-btn');
-        addBtns.forEach(b => b.addEventListener('click', function (e) { e.preventDefault(); addSubjectFlow(); }));
-
-        const removeBtns = document.querySelectorAll('.remove-subject');
-        removeBtns.forEach(b => {
-            if (!b.dataset.attached) {
-                b.dataset.attached = '1';
-                b.addEventListener('click', onRemoveSubjectButton);
-            }
-        });
+        addBtns.forEach(b => b.addEventListener('click', function (e) { e.preventDefault(); addSubjectFlowServer(); }));
 
         // Wire up search input if present
         const search = document.getElementById('subject-search');
@@ -168,8 +243,41 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
+    async function addSubjectFlowServer() {
+        const title = prompt('Enter subject name (e.g. "Machine Learning")');
+        if (!title) return;
+        // determine category based on page
+        let category = 'main';
+        if (document.getElementById('data-science-subjects')) category = 'data-science';
+        if (document.getElementById('cyber-subjects')) category = 'cyber';
+        try {
+            const res = await fetch('/api/subjects/add', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, category }) });
+            if (!res.ok) { const j = await res.json(); alert('Error: ' + (j.error || res.statusText)); return; }
+            const j = await res.json();
+            alert('Created ' + j.file);
+            const subs = await fetchSubjects(); if (subs) {
+                const isAdmin = true; renderSubjects(subs, isAdmin);
+            }
+        } catch (err) { console.error(err); alert('Create failed'); }
+    }
+
+    document.addEventListener('DOMContentLoaded', async function () {
         attachSubjectButtons();
+        const s = await fetch('/api/session', { credentials: 'same-origin' });
+        const isAdmin = s.ok ? (await s.json()).isAdmin : false;
+        // show add button(s) only to admin
+        document.querySelectorAll('#add-subject-btn').forEach(b => { b.style.display = isAdmin ? 'inline-block' : 'none'; });
+        const subs = await fetchSubjects();
+        if (subs) renderSubjects(subs, isAdmin);
+
+        // socket listener
+        try {
+            const socket = io();
+            socket.on('subjects-updated', function (subjects) { renderSubjects(subjects, isAdmin); });
+        } catch (e) {
+            console.warn('Socket not available', e.message);
+        }
+
         const search = document.getElementById('subject-search');
         if (search) filterSubjects(search.value);
     });

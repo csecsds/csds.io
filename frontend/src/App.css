@@ -1,0 +1,565 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-cyber: #00f2ff;
+  --secondary-cyber: #7000ff;
+  --bg-dark: #0a0b1e;
+  --bg-light: #f8fafc;
+  --text-dark: #0f172a;
+  --text-light: #f8fafc;
+  --accent-student: #2563eb;
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  transition: background-color 0.4s ease, color 0.4s ease;
+  overflow-x: hidden;
+}
+
+body.admin-theme {
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cyber-btn {
+  background: linear-gradient(135deg, var(--primary-cyber), var(--secondary-cyber));
+  color: white;
+  padding: 12px 24px;
+}
+
+.cyber-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
+}
+
+.student-btn {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  padding: 10px 20px;
+}
+
+.student-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: calc(100vh - 80px);
+}
+
+/* Header Styles */
+.main-header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 1100px) {
+  .college-name span {
+    display: none;
+  }
+}
+
+.admin-header {
+  background: rgba(10, 11, 30, 0.8);
+  box-shadow: 0 4px 20px rgba(0, 242, 255, 0.15);
+}
+
+.student-header {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.college-name {
+  flex: 2;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.college-logo-center {
+  height: 55px;
+  width: auto;
+  object-fit: contain;
+  background: white;
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.admin-header .college-name {
+  color: var(--primary-cyber);
+  text-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+}
+
+.student-header .college-name {
+  color: var(--text-dark);
+}
+
+.header-content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo,
+nav {
+  flex: 1;
+}
+
+nav {
+  justify-content: flex-end;
+}
+
+.logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: inherit;
+  flex: 1;
+  white-space: nowrap;
+}
+
+
+.logo-icon {
+  color: var(--primary-cyber);
+}
+
+.logo small {
+  font-size: 0.7rem;
+  background: var(--primary-cyber);
+  color: #000;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-weight: 500;
+  color: inherit;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.nav-link:hover {
+  opacity: 1;
+}
+
+.login-nav-btn,
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+}
+
+.login-nav-btn {
+  background: #f1f5f9;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.logout-btn {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Login Page */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 5rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.login-card h2 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+.login-card p {
+  opacity: 0.6;
+  margin-bottom: 2rem;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.5;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+  outline: none;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.error-msg {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Dashboard Styles */
+.dashboard-header {
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.dashboard-header h1 {
+  font-size: 2.5rem;
+  background: linear-gradient(to right, #00f2ff, #7000ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.admin-actions {
+  padding: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.add-form {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.add-form input,
+.add-form select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+}
+
+.add-form input {
+  flex: 2;
+}
+
+.add-form select {
+  flex: 1;
+}
+
+.subjects-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.category-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.category-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding-bottom: 10px;
+  border-bottom: 2px solid;
+}
+
+.cyber-title {
+  color: var(--primary-cyber);
+  border-color: var(--primary-cyber);
+}
+
+.ds-title {
+  color: var(--secondary-cyber);
+  border-color: var(--secondary-cyber);
+}
+
+.subject-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.subject-card {
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s;
+}
+
+.subject-card:hover {
+  transform: translateX(10px);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.delete-btn {
+  background: none;
+  color: #ef4444;
+  opacity: 0.5;
+}
+
+.delete-btn:hover {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* New CSS for PDF links */
+.upload-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.file-label {
+  padding: 10px 15px;
+  background: rgba(0, 242, 255, 0.1);
+  border: 1px dashed var(--primary-cyber);
+  border-radius: 8px;
+  color: var(--primary-cyber);
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+  transition: all 0.2s;
+}
+
+.file-label:hover {
+  background: rgba(0, 242, 255, 0.2);
+}
+
+.hidden-file-input {
+  display: none;
+}
+
+.or-text {
+  font-size: 0.7rem;
+  opacity: 0.5;
+  display: flex;
+  align-items: center;
+}
+
+.subject-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pdf-tag {
+  font-size: 0.75rem;
+  color: var(--primary-cyber);
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.subject-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.view-pdf-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--accent-student);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.view-pdf-btn:hover {
+  background: var(--accent-student);
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Student Specific */
+.student-hero {
+  text-align: center;
+  margin-bottom: 4rem;
+  padding: 3rem;
+}
+
+.hero-icon {
+  color: var(--accent-student);
+  margin-bottom: 1rem;
+}
+
+.student-hero h1 {
+  font-size: 3rem;
+  color: #1e293b;
+}
+
+.refresh-btn {
+  margin-top: 1.5rem;
+  padding: 8px 16px;
+  background: #f1f5f9;
+  color: #475569;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.cs-header {
+  color: #0369a1;
+}
+
+.ds-header {
+  color: #7c3aed;
+}
+
+.student-sc {
+  background: white;
+  color: #334155;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: none;
+  font-weight: 500;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.alert {
+  position: fixed;
+  top: 100px;
+  right: 40px;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  color: white;
+  z-index: 2000;
+}
+
+.alert.success {
+  background: #10b981;
+}
+
+.alert.error {
+  background: #ef4444;
+}
+
+@media (max-width: 768px) {
+  .subjects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .main-header {
+    padding: 0 1rem;
+  }
+
+  .add-form {
+    flex-direction: column;
+  }
+}

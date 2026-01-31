@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Admin - Manage PDFs</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background:#f4f6f8 }
+    .card { background: #fff; padding: 18px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.08); max-width:900px; margin: 0 auto }
+    .controls { display:flex; gap:12px; align-items:center }
+    .pdf-list { margin-top:18px }
+    .pdf-item { display:flex; gap:10px; align-items:center; padding:8px 0; border-bottom:1px dashed #eee }
+    .btn { padding:8px 12px; border-radius:6px; border:none; cursor:pointer }
+    .btn-primary { background:#1976d2; color:#fff }
+    .btn-danger { background:#e53935; color:#fff }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Admin: Upload / Replace PDFs</h2>
+
+    <div id="login-panel">
+      <p><strong>Admin login</strong></p>
+      <input id="password" type="password" placeholder="Password" />
+      <button id="login-btn" class="btn btn-primary">Login</button>
+      <div id="login-msg" style="margin-top:8px;color:#e53935"></div>
+    </div>
+
+    <div id="admin-panel" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <input type="file" id="file-input" accept=".pdf" />
+          <input type="text" id="file-name" placeholder="Optional filename to save as (e.g., questions.pdf)" style="margin-left:10px" />
+          <button id="upload-btn" class="btn btn-primary">Upload</button>
+        </div>
+        <div>
+          <button id="logout-btn" class="btn">Logout</button>
+        </div>
+      </div>
+
+      <h3 style="margin-top:18px">Existing PDFs</h3>
+      <div id="pdf-list" class="pdf-list"></div>
+
+      <h3 style="margin-top:18px">Manage Subjects</h3>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+        <select id="subject-category"><option value="main">Home</option><option value="data-science">Data Science</option><option value="cyber">Cybersecurity</option></select>
+        <input id="subject-title" placeholder="Subject title (e.g. Machine Learning)" />
+        <button id="subject-add-btn" class="btn btn-primary">Add Subject</button>
+      </div>
+      <div id="subjects-list"></div>
+    </div>
+
+  </div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/public/js/admin.js"></script>
+</body>
+</html>
